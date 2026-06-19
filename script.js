@@ -7,7 +7,7 @@
    - caption : petite légende (lieu, date, ce que tu veux)
    ========================================================= */
 const PHOTOS = [
-  { file: "photo-01.jpg", title: "La Maison Rose",      caption: "Antibes, 2026" },
+  { file: "photo-01.jpeg", title: "La Maison Rose",      caption: "Antibes, 2026" },
 ];
 
 const galleryEl = document.getElementById("gallery");
