@@ -7,7 +7,7 @@
    - caption : petite légende (lieu, date, ce que tu veux)
    ========================================================= */
 const PHOTOS = [
-  { file: "photo-01.jpg", title: "Sans titre",      caption: "Paris, 2024" },
+  { file: "photo-01.jpg", title: "La Maison Rose",      caption: "Antibes, 2026" },
   { file: "photo-02.jpg", title: "Lumière du soir",  caption: "Bretagne, 2024" },
   { file: "photo-03.jpg", title: "Portrait",         caption: "Studio, 2023" },
   { file: "photo-04.jpg", title: "Sans titre",       caption: "Lisbonne, 2023" },
