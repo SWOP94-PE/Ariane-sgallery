@@ -1,0 +1,177 @@
+:root{
+  --paper:#f6f4ee;
+  --ink:#1c1a17;
+  --ink-soft:#5a564e;
+  --rust:#a8542e;
+  --line:#d8d3c6;
+  --frame-bg:#ece8dd;
+}
+
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:'Space Mono', monospace;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ---------- Header ---------- */
+.site-header{
+  padding:2.5rem 6vw 1.5rem;
+  border-bottom:1px solid var(--line);
+}
+.header-inner{display:flex; flex-direction:column; gap:.35rem;}
+.frame-tag{
+  font-size:.7rem;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:var(--rust);
+}
+.site-title{
+  font-family:'Fraunces', serif;
+  font-weight:500;
+  font-size:clamp(2.2rem, 6vw, 4rem);
+  margin:0;
+  line-height:1;
+}
+.site-sub{
+  font-size:.85rem;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  color:var(--ink-soft);
+}
+
+/* ---------- Hero ---------- */
+.hero{padding:3rem 6vw 1rem;}
+.hero-frame{
+  position:relative;
+  background:var(--frame-bg);
+  border:1px solid var(--line);
+  padding:14px 14px 38px;
+}
+.hero-image{
+  width:100%;
+  aspect-ratio:16/9;
+  background-size:cover;
+  background-position:center;
+  background-color:#cfc9b8;
+}
+.sprockets{
+  position:absolute;
+  left:0; right:0; bottom:10px;
+  height:14px;
+  background-image: repeating-linear-gradient(90deg, var(--ink) 0 6px, transparent 6px 22px);
+  opacity:.15;
+  margin:0 14px;
+}
+.hero-caption{
+  margin:.9rem 0 0;
+  font-size:.8rem;
+  color:var(--ink-soft);
+  letter-spacing:.04em;
+}
+
+/* ---------- Gallery ---------- */
+.gallery{
+  padding:2rem 6vw 5rem;
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(280px,1fr));
+  gap:2.2rem 1.6rem;
+}
+.frame{
+  cursor:pointer;
+  background:var(--frame-bg);
+  border:1px solid var(--line);
+  padding:10px 10px 14px;
+  transition:transform .25s ease, box-shadow .25s ease;
+}
+.frame:hover{
+  transform:translateY(-4px);
+  box-shadow:0 14px 26px -16px rgba(28,26,23,.35);
+}
+.frame-photo{
+  width:100%;
+  aspect-ratio:4/5;
+  background-size:cover;
+  background-position:center;
+  background-color:#d8d2c2;
+}
+.frame-meta{
+  display:flex;
+  justify-content:space-between;
+  align-items:baseline;
+  margin-top:.6rem;
+  font-size:.7rem;
+  color:var(--ink-soft);
+  letter-spacing:.04em;
+}
+.frame-meta .num{color:var(--rust);}
+.frame-title{
+  margin:.25rem 0 0;
+  font-family:'Fraunces', serif;
+  font-size:1rem;
+  font-weight:500;
+  color:var(--ink);
+}
+
+/* ---------- Footer ---------- */
+.site-footer{
+  border-top:1px solid var(--line);
+  padding:2.2rem 6vw 3rem;
+}
+.footer-inner{display:flex; flex-direction:column; gap:.3rem;}
+.footer-name{font-family:'Fraunces', serif; font-size:1.2rem; margin:0;}
+.footer-contact{font-size:.8rem; color:var(--ink-soft); margin:0;}
+.footer-roll{font-size:.7rem; letter-spacing:.14em; color:var(--rust); margin:.6rem 0 0; text-transform:uppercase;}
+
+/* ---------- Lightbox ---------- */
+.lightbox{
+  position:fixed; inset:0;
+  background:rgba(20,18,15,.96);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:100;
+  padding:5vh 5vw;
+}
+.lightbox.open{display:flex;}
+.lightbox-figure{margin:0; max-width:90vw; max-height:90vh; text-align:center;}
+.lightbox-figure img{
+  max-width:100%;
+  max-height:80vh;
+  object-fit:contain;
+  box-shadow:0 30px 60px rgba(0,0,0,.5);
+}
+.lightbox-figure figcaption{
+  color:var(--paper);
+  font-size:.8rem;
+  margin-top:1rem;
+  letter-spacing:.04em;
+}
+.lightbox-close, .lightbox-prev, .lightbox-next{
+  position:absolute;
+  background:none;
+  border:none;
+  color:var(--paper);
+  font-size:1.8rem;
+  cursor:pointer;
+  font-family:'Space Mono', monospace;
+  opacity:.8;
+  transition:opacity .2s;
+}
+.lightbox-close:hover, .lightbox-prev:hover, .lightbox-next:hover{opacity:1;}
+.lightbox-close{top:1.5rem; right:2rem; font-size:1.4rem;}
+.lightbox-prev{left:2rem; top:50%; transform:translateY(-50%); font-size:3rem;}
+.lightbox-next{right:2rem; top:50%; transform:translateY(-50%); font-size:3rem;}
+
+@media (max-width:600px){
+  .lightbox-prev{left:.5rem;}
+  .lightbox-next{right:.5rem;}
+  .lightbox-close{right:1rem;}
+}
+
+@media (prefers-reduced-motion: reduce){
+  *{transition:none !important; scroll-behavior:auto !important;}
+}

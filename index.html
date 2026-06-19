@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lucie Martin — Photographie</title>
+<meta name="description" content="Portfolio photographique">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <span class="frame-tag">35mm — N° 1</span>
+    <h1 class="site-title">Lucie Martin</h1>
+    <span class="site-sub">photographie</span>
+  </div>
+</header>
+
+<section class="hero" id="hero">
+  <div class="hero-frame">
+    <div class="hero-image" style="background-image:url('photos/hero.jpg')"></div>
+    <div class="sprockets" aria-hidden="true"></div>
+  </div>
+  <p class="hero-caption">Une sélection d'images — argentique &amp; numérique</p>
+</section>
+
+<main>
+  <section class="gallery" id="gallery">
+    <!-- Les vignettes sont générées automatiquement par script.js -->
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <p class="footer-name">Lucie Martin</p>
+    <p class="footer-contact">contact@exemple.fr — Instagram @lucie.photo</p>
+    <p class="footer-roll">FIN DE PELLICULE — © <span id="year"></span></p>
+  </div>
+</footer>
+
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <button class="lightbox-close" id="lightbox-close" aria-label="Fermer">✕</button>
+  <button class="lightbox-prev" id="lightbox-prev" aria-label="Précédent">‹</button>
+  <button class="lightbox-next" id="lightbox-next" aria-label="Suivant">›</button>
+  <figure class="lightbox-figure">
+    <img id="lightbox-img" src="" alt="">
+    <figcaption id="lightbox-caption"></figcaption>
+  </figure>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
