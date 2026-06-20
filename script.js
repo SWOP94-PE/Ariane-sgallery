@@ -1,28 +1,178 @@
 /* =========================================================
-   📸 LISTE DES PHOTOS — modifie cette liste pour ajouter
-   ou retirer des images de la galerie.
+   📸 SÉRIES & PHOTOS — modifie cette liste pour gérer tes
+   collections.
 
-   - file    : nom du fichier dans le dossier /photos
-   - title   : titre affiché sous la photo
-   - caption : petite légende (lieu, date, ce que tu veux)
+   - id      : identifiant unique, sans espace ni accent
+               (utilisé dans le lien du site, ex: /#kerkennah-2025)
+   - name    : nom affiché dans le menu et les titres
+   - photos  : liste des photos de cette série
+       - file    : nom du fichier dans le dossier /photos
+       - title   : titre affiché sous la photo
+       - caption : petite légende (lieu, date, ce que tu veux)
+
+   Pour ajouter une nouvelle série : copie un bloc { id, name,
+   photos: [...] } et adapte-le. Une série peut démarrer avec
+   une liste de photos vide ([]) en attendant d'ajouter les
+   images.
    ========================================================= */
-const PHOTOS = [
-  { file: "photo-01.jpeg", title: "La Maison Rose",      caption: "Antibes, 2026" },
-   { file: "photo-02.jpeg", title: "Bon Vivre",      caption: "Antibes, 2026" },
+const SERIES = [
+  {
+    id: "2026",
+    name: "2026",
+    photos: [
+      { file: "photo-01.jpeg", title: "La Maison Rose", caption: "Antibes, 2026" },
+      { file: "photo-02.jpeg", title: "Bon Vivre",       caption: "Antibes, 2026" },
+    ],
+  },
+  {
+    id: "kerkennah-2025",
+    name: "Kerkennah 2025",
+    photos: [
+      // Ajoute tes photos ici, par exemple :
+      // { file: "kerkennah-01.jpg", title: "Sans titre", caption: "Kerkennah, 2025" },
+    ],
+  },
 ];
 
+/* ===================== Éléments du DOM ===================== */
+const menuBtn = document.getElementById("menu-btn");
+const sidePanel = document.getElementById("side-panel");
+const navOverlay = document.getElementById("nav-overlay");
+const panelClose = document.getElementById("panel-close");
+const seriesListEl = document.getElementById("series-list");
+const seriesGridEl = document.getElementById("series-grid");
+
+const viewHome = document.getElementById("view-home");
+const viewSeries = document.getElementById("view-series");
+const seriesTitleEl = document.getElementById("series-title");
+const seriesCountEl = document.getElementById("series-count");
+const backLink = document.getElementById("back-link");
 const galleryEl = document.getElementById("gallery");
+
 const lightbox = document.getElementById("lightbox");
 const lightboxImg = document.getElementById("lightbox-img");
 const lightboxCaption = document.getElementById("lightbox-caption");
 
+let activePhotos = [];
 let currentIndex = 0;
 
 function pad(n){ return String(n).padStart(3, "0"); }
 
+/* ===================== Panneau latéral ===================== */
+function openPanel(){
+  sidePanel.classList.add("open");
+  navOverlay.classList.add("open");
+  sidePanel.setAttribute("aria-hidden", "false");
+  menuBtn.setAttribute("aria-expanded", "true");
+}
+function closePanel(){
+  sidePanel.classList.remove("open");
+  navOverlay.classList.remove("open");
+  sidePanel.setAttribute("aria-hidden", "true");
+  menuBtn.setAttribute("aria-expanded", "false");
+}
+menuBtn.addEventListener("click", openPanel);
+panelClose.addEventListener("click", closePanel);
+navOverlay.addEventListener("click", closePanel);
+
+function renderPanelList(activeId){
+  seriesListEl.innerHTML = "";
+
+  const homeLi = document.createElement("li");
+  const homeBtn = document.createElement("button");
+  homeBtn.className = "panel-home-link";
+  homeBtn.textContent = "← Accueil";
+  homeBtn.addEventListener("click", () => { closePanel(); goHome(); });
+  homeLi.appendChild(homeBtn);
+  homeLi.style.borderBottom = "none";
+  homeLi.style.marginBottom = ".4rem";
+  seriesListEl.appendChild(homeLi);
+
+  SERIES.forEach((s) => {
+    const li = document.createElement("li");
+    const btn = document.createElement("button");
+    btn.textContent = s.name;
+    if (s.id === activeId) btn.classList.add("active");
+    const countSpan = document.createElement("span");
+    countSpan.className = "count";
+    countSpan.textContent = pad(s.photos.length);
+    btn.appendChild(countSpan);
+    btn.addEventListener("click", () => { closePanel(); openSeries(s.id); });
+    li.appendChild(btn);
+    seriesListEl.appendChild(li);
+  });
+}
+
+/* ===================== Accueil : vignettes des séries ===================== */
+function renderSeriesGrid(){
+  seriesGridEl.innerHTML = "";
+  SERIES.forEach((s) => {
+    const cover = s.photos[0];
+    const card = document.createElement("article");
+    card.className = "series-card";
+    card.setAttribute("tabindex", "0");
+    card.setAttribute("role", "button");
+    card.setAttribute("aria-label", `Voir la série ${s.name}`);
+
+    const coverStyle = cover
+      ? `background-image:url('photos/${cover.file}')`
+      : "";
+
+    card.innerHTML = `
+      <div class="series-card-image" style="${coverStyle}"></div>
+      <div class="series-card-label">
+        <span class="series-card-name">${s.name}</span>
+        <span class="series-card-count">${pad(s.photos.length)}</span>
+      </div>
+    `;
+
+    card.addEventListener("click", () => openSeries(s.id));
+    card.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") openSeries(s.id);
+    });
+
+    seriesGridEl.appendChild(card);
+  });
+}
+
+/* ===================== Navigation entre vues ===================== */
+function goHome(){
+  viewSeries.hidden = true;
+  viewHome.hidden = false;
+  renderPanelList(null);
+  history.replaceState(null, "", "#");
+  window.scrollTo({ top: 0, behavior: "instant" in window ? "instant" : "auto" });
+}
+
+function openSeries(id){
+  const series = SERIES.find((s) => s.id === id);
+  if (!series) return goHome();
+
+  activePhotos = series.photos;
+  seriesTitleEl.textContent = series.name;
+  seriesCountEl.textContent = `${pad(series.photos.length)} photo${series.photos.length > 1 ? "s" : ""}`;
+
+  renderGallery();
+  renderPanelList(id);
+
+  viewHome.hidden = true;
+  viewSeries.hidden = false;
+  history.replaceState(null, "", `#${id}`);
+  window.scrollTo({ top: 0, behavior: "instant" in window ? "instant" : "auto" });
+}
+
+backLink.addEventListener("click", goHome);
+
+/* ===================== Galerie d'une série ===================== */
 function renderGallery(){
   galleryEl.innerHTML = "";
-  PHOTOS.forEach((photo, i) => {
+
+  if (activePhotos.length === 0){
+    galleryEl.innerHTML = `<p class="empty-state">Aucune photo pour le moment dans cette série.</p>`;
+    return;
+  }
+
+  activePhotos.forEach((photo, i) => {
     const frame = document.createElement("article");
     frame.className = "frame";
     frame.setAttribute("tabindex", "0");
@@ -47,32 +197,29 @@ function renderGallery(){
   });
 }
 
+/* ===================== Lightbox (visionneuse) ===================== */
 function openLightbox(index){
   currentIndex = index;
   updateLightbox();
   lightbox.classList.add("open");
   lightbox.setAttribute("aria-hidden", "false");
 }
-
 function closeLightbox(){
   lightbox.classList.remove("open");
   lightbox.setAttribute("aria-hidden", "true");
 }
-
 function updateLightbox(){
-  const photo = PHOTOS[currentIndex];
+  const photo = activePhotos[currentIndex];
   lightboxImg.src = `photos/${photo.file}`;
   lightboxImg.alt = photo.title;
   lightboxCaption.textContent = `Fr. ${pad(currentIndex + 1)} — ${photo.title} — ${photo.caption}`;
 }
-
 function nextPhoto(){
-  currentIndex = (currentIndex + 1) % PHOTOS.length;
+  currentIndex = (currentIndex + 1) % activePhotos.length;
   updateLightbox();
 }
-
 function prevPhoto(){
-  currentIndex = (currentIndex - 1 + PHOTOS.length) % PHOTOS.length;
+  currentIndex = (currentIndex - 1 + activePhotos.length) % activePhotos.length;
   updateLightbox();
 }
 
@@ -85,12 +232,25 @@ lightbox.addEventListener("click", (e) => {
 });
 
 document.addEventListener("keydown", (e) => {
-  if (!lightbox.classList.contains("open")) return;
-  if (e.key === "Escape") closeLightbox();
-  if (e.key === "ArrowRight") nextPhoto();
-  if (e.key === "ArrowLeft") prevPhoto();
+  if (lightbox.classList.contains("open")){
+    if (e.key === "Escape") closeLightbox();
+    if (e.key === "ArrowRight") nextPhoto();
+    if (e.key === "ArrowLeft") prevPhoto();
+  } else if (sidePanel.classList.contains("open") && e.key === "Escape"){
+    closePanel();
+  }
 });
 
+/* ===================== Démarrage ===================== */
 document.getElementById("year").textContent = new Date().getFullYear();
+renderSeriesGrid();
+renderPanelList(null);
 
-renderGallery();
+// Si l'URL contient déjà une série (ex: monsite.com/#kerkennah-2025),
+// on l'ouvre directement.
+const initialId = window.location.hash.replace("#", "");
+if (initialId && SERIES.some((s) => s.id === initialId)){
+  openSeries(initialId);
+} else {
+  goHome();
+}

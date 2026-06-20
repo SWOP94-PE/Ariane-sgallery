@@ -13,6 +13,9 @@
 <body>
 
 <header class="site-header">
+  <button class="menu-btn" id="menu-btn" aria-label="Ouvrir le menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
   <div class="header-inner">
     <span class="frame-tag">35mm — N° 1</span>
     <h1 class="site-title">Ariane Brial</h1>
@@ -20,24 +23,56 @@
   </div>
 </header>
 
-<section class="hero" id="hero">
-  <div class="hero-frame">
-    <div class="hero-image" style="background-image:url('photos/hero.jpg')"></div>
-    <div class="sprockets" aria-hidden="true"></div>
+<!-- Panneau latéral (menu) -->
+<div class="nav-overlay" id="nav-overlay"></div>
+<nav class="side-panel" id="side-panel" aria-hidden="true">
+  <div class="side-panel-head">
+    <span class="side-panel-title">Séries</span>
+    <button class="panel-close" id="panel-close" aria-label="Fermer le menu">✕</button>
   </div>
-  <p class="hero-caption">Une sélection d'images — argentique &amp; numérique</p>
-</section>
+  <ul class="series-list" id="series-list">
+    <!-- Généré automatiquement par script.js -->
+  </ul>
+</nav>
 
 <main>
-  <section class="gallery" id="gallery">
-    <!-- Les vignettes sont générées automatiquement par script.js -->
+
+  <!-- Vue : page d'accueil -->
+  <section id="view-home" class="view">
+    <div class="hero" id="hero">
+      <div class="hero-frame">
+        <div class="hero-image" style="background-image:url('photos/hero.jpeg')"></div>
+        <div class="sprockets" aria-hidden="true"></div>
+      </div>
+      <p class="hero-caption">Si tendre est la vie — argentique &amp; numérique</p>
+    </div>
+
+    <div class="series-intro">
+      <h2 class="series-intro-title">Explorer les séries</h2>
+      <div class="series-grid" id="series-grid">
+        <!-- Généré automatiquement par script.js -->
+      </div>
+    </div>
   </section>
+
+  <!-- Vue : galerie d'une série -->
+  <section id="view-series" class="view" hidden>
+    <div class="series-header">
+      <button class="back-link" id="back-link">← Accueil</button>
+      <h2 class="series-title" id="series-title"></h2>
+      <span class="frame-tag" id="series-count"></span>
+    </div>
+    <div class="gallery" id="gallery">
+      <!-- Généré automatiquement par script.js -->
+    </div>
+  </section>
+
 </main>
 
 <footer class="site-footer">
   <div class="footer-inner">
     <p class="footer-name">Ariane Brial</p>
-    <p class="footer-contact">Contact : paulemilebrial@gmail.com </p>
+    <p class="footer-contact">Contact : paulemilebrial@gmail.com</p>
     <p class="footer-roll">FIN DE PELLICULE — © <span id="year"></span></p>
   </div>
 </footer>
