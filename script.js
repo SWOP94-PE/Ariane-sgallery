@@ -25,8 +25,8 @@ const SERIES = [
     ],
   },
   {
-    id: "kerkennah-2025",
-    name: "Kerkennah 2025",
+    id: "Carqueiranne-2025",
+    name: "Carqueiranne 2025",
     photos: [
       // Ajoute tes photos ici, par exemple :
       // { file: "kerkennah-01.jpg", title: "Sans titre", caption: "Kerkennah, 2025" },
